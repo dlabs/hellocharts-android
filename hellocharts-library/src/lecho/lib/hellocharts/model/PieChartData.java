@@ -18,6 +18,7 @@ public class PieChartData extends AbstractChartData {
 	public static final int DEFAULT_CENTER_TEXT1_SIZE_SP = 42;
 	public static final int DEFAULT_CENTER_TEXT2_SIZE_SP = 16;
 	public static final float DEFAULT_CENTER_CIRCLE_SCALE = 0.6f;
+    public static final int DEFAULT_STROKE_WIDTH_DP = 40;
 
 	private PieChartValueFormatter formatter = new SimplePieChartValueFormatter();
 	private boolean hasLabels = false;
@@ -27,6 +28,9 @@ public class PieChartData extends AbstractChartData {
 	private boolean hasCenterCircle = false;
 	private int centerCircleColor = Color.WHITE;
 	private float centerCircleScale = 0.6f;
+
+    private boolean drawStrokeOnly;
+    private int strokeWidth = DEFAULT_STROKE_WIDTH_DP;
 
 	private int centerText1Color = Color.BLACK;
 	private int centerText1FontSize = DEFAULT_CENTER_TEXT1_SIZE_SP;
@@ -62,6 +66,8 @@ public class PieChartData extends AbstractChartData {
 		this.hasCenterCircle = data.hasCenterCircle;
 		this.centerCircleColor = data.centerCircleColor;
 		this.centerCircleScale = data.centerCircleScale;
+        this.drawStrokeOnly = data.drawStrokeOnly;
+        this.strokeWidth = data.strokeWidth;
 
 		this.centerText1Color = data.centerText1Color;
 		this.centerText1FontSize = data.centerText1FontSize;
@@ -173,7 +179,23 @@ public class PieChartData extends AbstractChartData {
 		this.hasCenterCircle = hasCenterCircle;
 	}
 
-	public int getCenterCircleColor() {
+    public boolean isDrawStrokeOnly() {
+        return drawStrokeOnly;
+    }
+
+    public void setDrawStrokeOnly(boolean drawStrokeOnly) {
+        this.drawStrokeOnly = drawStrokeOnly;
+    }
+
+    public int getStrokeWidth() {
+        return strokeWidth;
+    }
+
+    public void setStrokeWidth(int strokeWidth) {
+        this.strokeWidth = strokeWidth;
+    }
+
+    public int getCenterCircleColor() {
 		return centerCircleColor;
 	}
 

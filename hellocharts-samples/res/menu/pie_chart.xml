@@ -20,6 +20,10 @@
         android:title="Center circle"
         app:showAsAction="never"/>
     <item
+        android:id="@+id/action_draw_stroke"
+        android:title="Draw Stroke Only"
+        app:showAsAction="never"/>
+    <item
         android:id="@+id/action_center_text1"
         android:title="Center circle text 1"
         app:showAsAction="never"/>

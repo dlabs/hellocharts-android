@@ -49,6 +49,7 @@ public class PieChartActivity extends ActionBarActivity {
 		private boolean isExploaded = false;
 		private boolean hasArcSeparated = false;
 		private boolean hasLabelForSelected = false;
+        private boolean drawStrokeOnly = false;
 
 		public PlaceholderFragment() {
 		}
@@ -98,6 +99,11 @@ public class PieChartActivity extends ActionBarActivity {
 				generateData();
 				return true;
 			}
+            if (id == R.id.action_draw_stroke) {
+                drawStrokeOnly = !drawStrokeOnly;
+                generateData();
+                return true;
+            }
 			if (id == R.id.action_center_text1) {
 				hasCenterText1 = !hasCenterText1;
 
@@ -179,6 +185,10 @@ public class PieChartActivity extends ActionBarActivity {
 			data.setHasLabelsOnlyForSelected(hasLabelForSelected);
 			data.setHasLabelsOutside(hasLabelsOutside);
 			data.setHasCenterCircle(hasCenterCircle);
+            data.setDrawStrokeOnly(drawStrokeOnly);
+            if (drawStrokeOnly) {
+                data.setHasCenterCircle(false);
+            }
 
 			if (hasCenterText1) {
 				data.setCenterText1("Hello!");

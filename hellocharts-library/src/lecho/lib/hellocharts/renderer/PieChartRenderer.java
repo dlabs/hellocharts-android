@@ -48,6 +48,8 @@ public class PieChartRenderer extends AbstractChartRenderer {
 	private boolean hasCenterCircle;
 	private float centerCircleScale;
 	private Paint centerCirclePaint = new Paint();
+    private boolean drawStrokeOnly;
+    private float strokeWidth;
 	// Text1
 	private Paint centerCircleText1Paint = new Paint();
 	private FontMetricsInt centerCircleText1FontMetrics = new FontMetricsInt();
@@ -109,6 +111,9 @@ public class PieChartRenderer extends AbstractChartRenderer {
 
 		hasCenterCircle = data.hasCenterCircle();
 		centerCircleScale = data.getCenterCircleScale();
+        drawStrokeOnly = data.isDrawStrokeOnly();
+        strokeWidth = ChartUtils.dp2px(scaledDensity, data.getStrokeWidth());
+        slicePaint.setStrokeWidth(strokeWidth);
 
 		centerCirclePaint.setColor(data.getCenterCircleColor());
 
@@ -245,19 +250,34 @@ public class PieChartRenderer extends AbstractChartRenderer {
 
 		drawCircleOval.set(orginCircleOval);
 		final int sliceSpacing = ChartUtils.dp2px(density, sliceValue.getSliceSpacing());
-		drawCircleOval.inset(sliceSpacing, sliceSpacing);
-		drawCircleOval.offset((float) (sliceVector.x * sliceSpacing), (float) (sliceVector.y * sliceSpacing));
+        if (drawStrokeOnly) {
+            slicePaint.setStyle(Paint.Style.STROKE);
+            drawCircleOval.inset(sliceSpacing + strokeWidth / 2, sliceSpacing + strokeWidth / 2);
+        } else {
+            slicePaint.setStyle(Paint.Style.FILL);
+            drawCircleOval.inset(sliceSpacing, sliceSpacing);
+        }
+
+        drawCircleOval.offset((float) (sliceVector.x * sliceSpacing), (float) (sliceVector.y * sliceSpacing));
+
+
 		if (MODE_HIGHLIGHT == mode) {
 			// Add additional touch feedback by setting bigger radius for that slice and darken color.
-			drawCircleOval.inset(-touchAdditional, -touchAdditional);
+            if (drawStrokeOnly) {
+                slicePaint.setStrokeWidth(strokeWidth * 1.2f);
+            } else {
+                slicePaint.setStrokeWidth(strokeWidth);
+                drawCircleOval.inset(-touchAdditional, -touchAdditional);
+            }
 			slicePaint.setColor(sliceValue.getDarkenColor());
-			canvas.drawArc(drawCircleOval, lastAngle, angle, true, slicePaint);
+			canvas.drawArc(drawCircleOval, lastAngle, angle, !drawStrokeOnly, slicePaint);
 			if (hasLabels || hasLabelsOnlyForSelected) {
 				drawLabel(canvas, sliceValue);
 			}
 		} else {
+            slicePaint.setStrokeWidth(strokeWidth);
 			slicePaint.setColor(sliceValue.getColor());
-			canvas.drawArc(drawCircleOval, lastAngle, angle, true, slicePaint);
+			canvas.drawArc(drawCircleOval, lastAngle, angle, !drawStrokeOnly, slicePaint);
 			if (hasLabels) {
 				drawLabel(canvas, sliceValue);
 			}
