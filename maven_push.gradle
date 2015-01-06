@@ -2,6 +2,7 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 def isReleaseBuild() {
+    System.out.println(version)
     return version.contains("SNAPSHOT") == false
 }
 
